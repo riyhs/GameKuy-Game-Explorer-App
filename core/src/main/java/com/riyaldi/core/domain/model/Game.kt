@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class GameEntity(
+data class Game(
     val id : Int,
     val name : String,
     val description : String,

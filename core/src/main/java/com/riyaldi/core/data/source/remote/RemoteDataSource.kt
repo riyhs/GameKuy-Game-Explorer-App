@@ -3,7 +3,7 @@ package com.riyaldi.core.data.source.remote
 import android.util.Log
 import com.riyaldi.core.data.source.remote.network.ApiResponse
 import com.riyaldi.core.data.source.remote.network.ApiService
-import com.riyaldi.core.data.source.remote.response.Result
+import com.riyaldi.core.data.source.remote.response.GameResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Singleton
 class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
-    suspend fun getAllGames(): Flow<ApiResponse<List<Result>>> {
+    suspend fun getAllGames(): Flow<ApiResponse<List<GameResponse>>> {
         return flow {
             try {
                 val response = apiService.getGames()

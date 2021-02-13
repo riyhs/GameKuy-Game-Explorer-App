@@ -1,6 +1,5 @@
-package com.riyaldi.core.data.source
+package com.riyaldi.core.data
 
-import com.riyaldi.core.data.Resource
 import com.riyaldi.core.data.source.remote.network.ApiResponse
 import kotlinx.coroutines.flow.*
 
