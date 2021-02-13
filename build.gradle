@@ -16,6 +16,8 @@ buildscript {
     ext.activity_ktx_version = "1.1.0"
     ext.fragment_ktx_version = '1.2.5'
 
+    ext.nav_version = '2.3.2'
+
     repositories {
         google()
         jcenter()

@@ -1,4 +1,4 @@
-package com.riyaldi.gamekuy
+package com.riyaldi.gamekuy.di
 
 import com.riyaldi.core.domain.usecase.GameUseCase
 import com.riyaldi.core.domain.usecase.GameUseCaseImpl

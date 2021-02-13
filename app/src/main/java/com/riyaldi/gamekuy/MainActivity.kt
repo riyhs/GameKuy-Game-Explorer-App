@@ -1,35 +1,39 @@
 package com.riyaldi.gamekuy
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.viewModels
-import com.riyaldi.core.data.Resource
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import com.riyaldi.gamekuy.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val mainViewModel : MainViewModel by viewModels()
+    private var _activityMainBinding: ActivityMainBinding? = null
+    private val binding get() = _activityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
-        mainViewModel.games.observe(this, {games ->
-            when(games) {
-                is Resource.Success -> {
-                    Log.d("MainActivity", "Success")
-                    Log.d("MainActivityResponse", games.data.toString())
-                }
-                is Resource.Error -> {
-                    Log.d("MainActivity", "Errr")
-                }
-                is Resource.Loading -> {
-                    Log.d("MainActivity", "Loading")
-                }
-            }
-        })
+        setupBottomNav()
+    }
 
+    fun setupBottomNav() {
+        val bottomNavigationView = binding?.bottomNav
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment
+        if (bottomNavigationView != null) {
+            NavigationUI.setupWithNavController(
+                    bottomNavigationView,
+                    navHostFragment.navController
+            )
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _activityMainBinding = null
     }
 }
