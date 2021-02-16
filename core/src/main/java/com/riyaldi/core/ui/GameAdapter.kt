@@ -35,10 +35,12 @@ class GameAdapter: RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
         fun bind(data: Game){
             with(binding) {
                 Glide.with(itemView.context)
-                        .load(data.bgImage)
-                        .into(ivPoster)
-                tvJudul.text = data.name
-                tvDesc.text = data.description
+                    .load(data.bgImage)
+                    .into(ivItemPoster)
+                tvItemJudul.text = data.name
+                tvItemGenres.text = data.genres
+                tvItemReleased.text = data.platforms
+                tvItemMetascore.text = data.metaScore.toString()
             }
         }
 
