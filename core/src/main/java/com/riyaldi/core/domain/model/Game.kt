@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Game(
     val id : Int,
     val name : String,
-    val description : String,
+    var description : String,
     val released : String,
     val bgImage : String,
     val metaScore : Int,

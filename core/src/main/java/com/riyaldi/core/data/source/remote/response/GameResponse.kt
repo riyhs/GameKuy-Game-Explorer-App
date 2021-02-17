@@ -18,5 +18,9 @@ data class GameResponse(
     @SerializedName("genres")
     val genres: List<Genre>,
     @SerializedName("clip")
-    val clip: Clip
+    val clip: Clip,
+    @SerializedName("publishers")
+    val publishers: List<Publisher>,
+    @SerializedName("description_raw")
+    val descriptionRaw: String
 )

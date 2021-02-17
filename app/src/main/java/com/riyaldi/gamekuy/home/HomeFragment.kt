@@ -50,7 +50,6 @@ class HomeFragment : Fragment() {
                         is Resource.Loading -> Toast.makeText(context, "loading", Toast.LENGTH_SHORT).show()
                         is Resource.Success -> {
                             gameAdapter.setData(game.data)
-                            Log.d("Homefragment", game.data.toString())
                         }
                         is Resource.Error -> Toast.makeText(context, "error ${game.message}", Toast.LENGTH_SHORT).show()
                     }

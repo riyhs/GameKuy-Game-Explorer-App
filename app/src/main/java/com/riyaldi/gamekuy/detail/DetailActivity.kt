@@ -1,15 +1,19 @@
 package com.riyaldi.gamekuy.detail
 
 import android.os.Bundle
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.riyaldi.core.domain.model.Game
 import com.riyaldi.gamekuy.databinding.ActivityDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Math.abs
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
+
+    private val detailViewModel: DetailViewModel by viewModels()
 
     private lateinit var binding: ActivityDetailBinding
 
@@ -28,8 +32,14 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         val game = intent.getParcelableExtra<Game>(EXTRA_GAME)
 
         if (game != null) {
-            populateData(game)
-            Toast.makeText(this, game.name, Toast.LENGTH_SHORT).show()
+            detailViewModel.setFilm(game.id)
+
+            detailViewModel.getDetailFilm().observe(this, { detailGame ->
+                if (detailGame.data != null) {
+                    populateData(game)
+                }
+            })
+
         }
     }
 

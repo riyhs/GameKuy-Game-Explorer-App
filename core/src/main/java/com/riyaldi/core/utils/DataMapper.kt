@@ -45,17 +45,48 @@ object DataMapper {
             }
 
     fun mapDomainToEntity(input: Game): GameEntity = GameEntity(
+        id = input.id,
+        name = input.name,
+        description = input.description,
+        released = input.released,
+        bgImage = input.bgImage,
+        metaScore = input.metaScore,
+        platforms = input.platforms,
+        genres = input.genres,
+        clip = input.clip,
+        isFavorite = input.isFavorite
+    )
+
+    fun mapEntityToDomain(input: GameEntity): Game = Game(
+        id = input.id,
+        name = input.name,
+        description = input.description,
+        released = input.released,
+        bgImage = input.bgImage,
+        metaScore = input.metaScore,
+        platforms = input.platforms,
+        genres = input.genres,
+        clip = input.clip,
+        isFavorite = input.isFavorite
+    )
+
+    fun mapResponseToEntity(input: GameResponse): GameEntity {
+        val platforms = getPlatformName(input)
+        val genres = getGenreName(input)
+
+        return GameEntity(
             id = input.id,
             name = input.name,
-            description = input.description,
+            description = input.descriptionRaw,
             released = input.released,
-            bgImage = input.bgImage,
-            metaScore = input.metaScore,
-            platforms = input.platforms,
-            genres = input.genres,
-            clip = input.clip,
-            isFavorite = input.isFavorite
-    )
+            bgImage = input.backgroundImage,
+            metaScore = input.metacritic,
+            platforms = platforms,
+            genres = genres,
+            clip = input.clip.clip,
+            isFavorite = false
+        )
+    }
 
     private fun getPlatformName(data: GameResponse): String {
         val result = StringBuilder().append("")

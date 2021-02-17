@@ -29,4 +29,20 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    suspend fun getDetailGame(id: Int): Flow<ApiResponse<GameResponse>> {
+        return flow {
+            try {
+                val response = apiService.getDetailGame(id.toString())
+                if (response.descriptionRaw != "" && response.publishers.isNotEmpty()) {
+                    emit(ApiResponse.Success(response))
+                } else {
+                    emit(ApiResponse.Empty)
+                }
+            } catch (e: java.lang.Exception) {
+                emit(ApiResponse.Error(e.toString()))
+                Log.e("RemoteDataSource", e.toString())
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 }

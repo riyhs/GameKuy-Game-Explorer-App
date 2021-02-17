@@ -21,6 +21,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
+            app:maxLines="2"
             app:title="@string/app_name">
 
             <ImageView

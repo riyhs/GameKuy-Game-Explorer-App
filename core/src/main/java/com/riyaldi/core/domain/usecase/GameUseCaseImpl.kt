@@ -5,4 +5,5 @@ import javax.inject.Inject
 
 class GameUseCaseImpl @Inject constructor(private val gameRepository: GameRepository): GameUseCase {
     override fun getGames() = gameRepository.getGames()
+    override fun getDetailGame(id: Int) = gameRepository.getDetailGame(id)
 }

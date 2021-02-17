@@ -28,6 +28,7 @@ class GameRepositoryImpl @Inject constructor(
             }
 
             override fun shouldFetch(data: List<Game>): Boolean =
+//                data.isEmpty()
                 true
 
             override suspend fun createCall(): Flow<ApiResponse<List<GameResponse>>> =
@@ -38,4 +39,34 @@ class GameRepositoryImpl @Inject constructor(
                 localDataSource.insertGames(gameList)
             }
         }.asFlow()
+
+//    override suspend fun getDetailGame(id: Int): Flow<Resource<GameEntity>> =
+//        remoteDataSource.getDetailGame(id).map {
+//            when(it) {
+//                is ApiResponse.Success -> Resource.Success(DataMapper.mapResponseToEntity(it.data))
+//                is ApiResponse.Error -> Resource.Error(it.errorMessage)
+//                is ApiResponse.Empty -> Resource.Error("Empty")
+//            }
+//        }
+
+    override fun getDetailGame(id: Int): Flow<Resource<Game>> =
+        object : NetworkResourceBound<Game, GameResponse>() {
+            override fun loadFromDB(): Flow<Game> {
+                return localDataSource.getGameById(id).map {
+                    DataMapper.mapEntityToDomain(it)
+                }
+            }
+
+            override fun shouldFetch(data: Game): Boolean =
+                data.description == ""
+
+            override suspend fun createCall(): Flow<ApiResponse<GameResponse>> =
+                remoteDataSource.getDetailGame(id)
+
+            override suspend fun saveCallResult(data: GameResponse) {
+                val gameDetail = DataMapper.mapResponseToEntity(data)
+                localDataSource.editGame(gameDetail)
+            }
+        }.asFlow()
+
 }
