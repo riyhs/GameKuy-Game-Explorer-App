@@ -3,6 +3,8 @@ package com.riyaldi.core.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.riyaldi.core.R
@@ -41,6 +43,17 @@ class GameAdapter: RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
                 tvItemGenres.text = data.genres
                 tvItemReleased.text = data.platforms
                 tvItemMetascore.text = data.metaScore.toString()
+
+                when {
+                    data.metaScore < 50 -> {
+                        metascore.background = getDrawable(itemView.context, R.drawable.custom_bg_metascore_red)
+                        tvItemMetascore.setTextColor(getColor(itemView.context, R.color.red))
+                    }
+                    data.metaScore < 75 -> {
+                        metascore.background = getDrawable(itemView.context, R.drawable.custom_bg_metascore_yellow)
+                        tvItemMetascore.setTextColor(getColor(itemView.context, R.color.yellow))
+                    }
+                }
             }
         }
 

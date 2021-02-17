@@ -5,4 +5,7 @@
     <color name="blue_light">#6283FF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green">#40E847</color>
+    <color name="yellow">#DFB913</color>
+    <color name="red">#DA1919</color>
 </resources>
