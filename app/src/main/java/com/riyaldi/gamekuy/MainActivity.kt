@@ -1,6 +1,5 @@
 package com.riyaldi.gamekuy
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
