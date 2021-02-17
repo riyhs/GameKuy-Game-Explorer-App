@@ -1,14 +1,16 @@
 package com.riyaldi.gamekuy.detail
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
+import com.riyaldi.core.data.Resource
 import com.riyaldi.core.domain.model.Game
 import com.riyaldi.gamekuy.databinding.ActivityDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Math.abs
+import kotlin.math.abs
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener {
@@ -32,11 +34,11 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         val game = intent.getParcelableExtra<Game>(EXTRA_GAME)
 
         if (game != null) {
-            detailViewModel.setFilm(game.id)
-
-            detailViewModel.getDetailFilm().observe(this, { detailGame ->
-                if (detailGame.data != null) {
-                    populateData(game)
+            detailViewModel.getDetailFilm(game.id).observe(this, { detailGame ->
+                when(detailGame) {
+                    is Resource.Loading -> Toast.makeText(this, "load", Toast.LENGTH_SHORT).show()
+                    is Resource.Success -> populateData(detailGame.data as Game)
+                    is Resource.Error -> Toast.makeText(this, "error : ${detailGame.message}", Toast.LENGTH_SHORT).show()
                 }
             })
 

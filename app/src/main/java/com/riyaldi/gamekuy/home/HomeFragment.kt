@@ -47,7 +47,7 @@ class HomeFragment : Fragment() {
             homeViewModel.game.observe(viewLifecycleOwner, { game ->
                 if (game != null) {
                     when(game) {
-                        is Resource.Loading -> Toast.makeText(context, "loading", Toast.LENGTH_SHORT).show()
+                        is Resource.Loading -> Log.d("HomeFragment", "loading")
                         is Resource.Success -> {
                             gameAdapter.setData(game.data)
                         }

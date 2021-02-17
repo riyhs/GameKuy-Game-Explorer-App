@@ -1,5 +1,6 @@
 package com.riyaldi.core.data
 
+import android.util.Log
 import com.riyaldi.core.data.source.local.LocalDataSource
 import com.riyaldi.core.data.source.remote.RemoteDataSource
 import com.riyaldi.core.data.source.remote.network.ApiResponse
@@ -28,8 +29,7 @@ class GameRepositoryImpl @Inject constructor(
             }
 
             override fun shouldFetch(data: List<Game>): Boolean =
-//                data.isEmpty()
-                true
+                data.isEmpty()
 
             override suspend fun createCall(): Flow<ApiResponse<List<GameResponse>>> =
                 remoteDataSource.getAllGames()
@@ -40,15 +40,6 @@ class GameRepositoryImpl @Inject constructor(
             }
         }.asFlow()
 
-//    override suspend fun getDetailGame(id: Int): Flow<Resource<GameEntity>> =
-//        remoteDataSource.getDetailGame(id).map {
-//            when(it) {
-//                is ApiResponse.Success -> Resource.Success(DataMapper.mapResponseToEntity(it.data))
-//                is ApiResponse.Error -> Resource.Error(it.errorMessage)
-//                is ApiResponse.Empty -> Resource.Error("Empty")
-//            }
-//        }
-
     override fun getDetailGame(id: Int): Flow<Resource<Game>> =
         object : NetworkResourceBound<Game, GameResponse>() {
             override fun loadFromDB(): Flow<Game> {
@@ -57,8 +48,9 @@ class GameRepositoryImpl @Inject constructor(
                 }
             }
 
-            override fun shouldFetch(data: Game): Boolean =
-                data.description == ""
+            override fun shouldFetch(data: Game): Boolean {
+                return data.description == "" || data.description.isEmpty()
+            }
 
             override suspend fun createCall(): Flow<ApiResponse<GameResponse>> =
                 remoteDataSource.getDetailGame(id)
