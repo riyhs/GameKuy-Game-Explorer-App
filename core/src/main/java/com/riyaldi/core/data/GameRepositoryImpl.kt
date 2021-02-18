@@ -1,6 +1,5 @@
 package com.riyaldi.core.data
 
-import android.util.Log
 import com.riyaldi.core.data.source.local.LocalDataSource
 import com.riyaldi.core.data.source.remote.RemoteDataSource
 import com.riyaldi.core.data.source.remote.network.ApiResponse
@@ -57,8 +56,14 @@ class GameRepositoryImpl @Inject constructor(
 
             override suspend fun saveCallResult(data: GameResponse) {
                 val gameDetail = DataMapper.mapResponseToEntity(data)
-                localDataSource.editGame(gameDetail)
+                appExecutors.diskIO().execute { localDataSource.editGame(gameDetail) }
             }
         }.asFlow()
+
+    override fun setFavoriteGame(game: Game) {
+        val gameEntity = DataMapper.mapDomainToEntity(game)
+        gameEntity.isFavorite = !gameEntity.isFavorite
+        appExecutors.diskIO().execute { localDataSource.editGame(gameEntity) }
+    }
 
 }

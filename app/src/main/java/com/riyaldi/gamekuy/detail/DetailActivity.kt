@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.riyaldi.core.data.Resource
 import com.riyaldi.core.domain.model.Game
+import com.riyaldi.gamekuy.R
 import com.riyaldi.gamekuy.databinding.ActivityDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
@@ -37,12 +39,26 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
             detailViewModel.getDetailFilm(game.id).observe(this, { detailGame ->
                 when(detailGame) {
                     is Resource.Loading -> Toast.makeText(this, "load", Toast.LENGTH_SHORT).show()
-                    is Resource.Success -> populateData(detailGame.data as Game)
+                    is Resource.Success -> {
+                        val dataGame = detailGame.data as Game
+                        setFavoriteState(dataGame.isFavorite)
+                        populateData(dataGame)
+                        binding.fabAddFavorite.setOnClickListener {
+                            detailViewModel.setFavoriteGame(dataGame)
+                            setFavoriteState(dataGame.isFavorite)
+                        }
+                    }
                     is Resource.Error -> Toast.makeText(this, "error : ${detailGame.message}", Toast.LENGTH_SHORT).show()
                 }
             })
 
         }
+    }
+
+    private fun setFavoriteState(isFav: Boolean) {
+        if (isFav) binding.fabAddFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_filled))
+        else binding.fabAddFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_border))
+
     }
 
     private fun populateData(game: Game) {
