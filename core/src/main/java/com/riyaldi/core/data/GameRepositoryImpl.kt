@@ -39,6 +39,13 @@ class GameRepositoryImpl @Inject constructor(
             }
         }.asFlow()
 
+    override fun getFavoriteGames(): Flow<List<Game>> {
+        return localDataSource.getFavoriteGames().map {
+            DataMapper.mapEntitiesToDomain(it)
+        }
+
+    }
+
     override fun getDetailGame(id: Int): Flow<Resource<Game>> =
         object : NetworkResourceBound<Game, GameResponse>() {
             override fun loadFromDB(): Flow<Game> {

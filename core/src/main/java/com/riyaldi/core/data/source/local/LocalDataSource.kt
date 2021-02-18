@@ -10,6 +10,8 @@ import javax.inject.Singleton
 class LocalDataSource @Inject constructor(private val gameDao: GameDao) {
     fun getAllGames(): Flow<List<GameEntity>> = gameDao.getAllGames()
 
+    fun getFavoriteGames(): Flow<List<GameEntity>> = gameDao.getFavoriteGames()
+
     fun getGameById(id: Int): Flow<GameEntity> = gameDao.getGameById(id)
 
     suspend fun insertGames(games: List<GameEntity>) = gameDao.insertGame(games)
