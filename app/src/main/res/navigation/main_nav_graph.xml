@@ -20,12 +20,12 @@
         android:label="fragment_explore"
         tools:layout="@layout/fragment_explore" >
         <action
-            android:id="@+id/action_exploreFragment_to_favoriteFragment2"
+            android:id="@+id/action_exploreFragment_to_favoriteFragment"
             app:destination="@id/favoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.riyaldi.gamekuy.favorite.FavoriteFragment"
-        android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        app:moduleName="GameKuy.favorite"
+        android:label="FavoriteFragment" />
 </navigation>
