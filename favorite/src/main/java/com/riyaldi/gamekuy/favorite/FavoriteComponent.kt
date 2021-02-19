@@ -2,6 +2,7 @@ package com.riyaldi.gamekuy.favorite
 
 import android.content.Context
 import com.riyaldi.gamekuy.di.FavoriteModuleDependencies
+import com.riyaldi.gamekuy.favorite.ui.FavoriteFragment
 import dagger.BindsInstance
 import dagger.Component
 

@@ -3,6 +3,7 @@ package com.riyaldi.gamekuy.favorite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.riyaldi.core.domain.usecase.GameUseCase
+import com.riyaldi.gamekuy.favorite.ui.FavoriteViewModel
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")

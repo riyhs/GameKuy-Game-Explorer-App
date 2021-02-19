@@ -1,4 +1,4 @@
-package com.riyaldi.gamekuy.favorite
+package com.riyaldi.gamekuy.favorite.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData

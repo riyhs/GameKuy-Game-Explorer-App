@@ -1,6 +1,7 @@
-package com.riyaldi.gamekuy.favorite
+package com.riyaldi.gamekuy.favorite.ui
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -11,7 +12,10 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.riyaldi.core.ui.GameAdapter
 import com.riyaldi.core.ui.MarginItemDecoration
+import com.riyaldi.gamekuy.detail.DetailActivity
 import com.riyaldi.gamekuy.di.FavoriteModuleDependencies
+import com.riyaldi.gamekuy.favorite.DaggerFavoriteComponent
+import com.riyaldi.gamekuy.favorite.ViewModelFactory
 import com.riyaldi.gamekuy.favorite.databinding.FragmentFavoriteBinding
 import dagger.hilt.android.EntryPointAccessors
 import javax.inject.Inject
@@ -53,6 +57,12 @@ class FavoriteFragment : Fragment() {
         if (activity != null) {
 
             val favoriteGameAdapter = GameAdapter()
+
+            favoriteGameAdapter.onItemClick = { selectedGame ->
+                val intent = Intent(context, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_GAME, selectedGame)
+                startActivity(intent)
+            }
 
             favoriteViewModel.favoriteGames.observe(viewLifecycleOwner, { favoriteGames ->
                 favoriteGameAdapter.setData(favoriteGames)

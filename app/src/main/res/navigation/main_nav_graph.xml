@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.riyaldi.gamekuy.favorite.FavoriteFragment"
+        android:name="com.riyaldi.gamekuy.favorite.ui.FavoriteFragment"
         app:moduleName="GameKuy.favorite"
         android:label="FavoriteFragment" />
 </navigation>
