@@ -9,6 +9,7 @@ import com.riyaldi.core.domain.repository.GameRepository
 import com.riyaldi.core.utils.AppExecutors
 import com.riyaldi.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -71,6 +72,22 @@ class GameRepositoryImpl @Inject constructor(
         val gameEntity = DataMapper.mapDomainToEntity(game)
         gameEntity.isFavorite = !gameEntity.isFavorite
         appExecutors.diskIO().execute { localDataSource.editGame(gameEntity) }
+    }
+
+    override suspend fun searchGames(query: String): Resource<List<Game>> {
+        return when(val response = remoteDataSource.searchGame(query).first()) {
+            is ApiResponse.Success -> {
+                val gamesEntities = DataMapper.mapResponsesToEntities(response.data)
+                val games = DataMapper.mapEntitiesToDomain(gamesEntities)
+                Resource.Success(games)
+            }
+            is ApiResponse.Error -> {
+                Resource.Error(response.errorMessage, null)
+            }
+            is ApiResponse.Empty -> {
+                Resource.Error(response.toString(), null)
+            }
+        }
     }
 
 }

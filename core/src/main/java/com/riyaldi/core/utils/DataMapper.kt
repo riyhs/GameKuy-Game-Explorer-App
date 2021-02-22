@@ -20,7 +20,7 @@ object DataMapper {
                     metaScore = it.metacritic,
                     platforms = platforms,
                     genres = genres,
-                    clip = it.clip.clip,
+                    clip = it.clip?.clip ?: "null",
                     isFavorite = false
             )
             gameList.add(game)
@@ -35,7 +35,7 @@ object DataMapper {
                         name = it.name,
                         description = it.description,
                         released = it.released,
-                        bgImage = it.bgImage,
+                        bgImage = it.bgImage.toString(),
                         metaScore = it.metaScore,
                         platforms = it.platforms,
                         genres = it.genres,
@@ -62,7 +62,7 @@ object DataMapper {
         name = input.name,
         description = input.description,
         released = input.released,
-        bgImage = input.bgImage,
+        bgImage = input.bgImage.toString(),
         metaScore = input.metaScore,
         platforms = input.platforms,
         genres = input.genres,
@@ -83,7 +83,7 @@ object DataMapper {
             metaScore = input.metacritic,
             platforms = platforms,
             genres = genres,
-            clip = input.clip.clip,
+            clip = input.clip?.clip ?: "null",
             isFavorite = false
         )
     }

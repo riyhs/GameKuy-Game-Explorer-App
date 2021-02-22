@@ -25,7 +25,7 @@ data class GameEntity(
     val released : String,
 
     @ColumnInfo(name = "bgImage")
-    val bgImage : String,
+    val bgImage : String?,
 
     @ColumnInfo(name = "metaScore")
     val metaScore : Int,
