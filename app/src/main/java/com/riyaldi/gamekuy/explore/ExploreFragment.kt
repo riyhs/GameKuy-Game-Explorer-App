@@ -2,7 +2,9 @@ package com.riyaldi.gamekuy.explore
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.Toast
@@ -16,6 +18,7 @@ import com.riyaldi.core.ui.GameAdapter
 import com.riyaldi.core.ui.MarginItemDecoration
 import com.riyaldi.gamekuy.R
 import com.riyaldi.gamekuy.databinding.FragmentExploreBinding
+import com.riyaldi.gamekuy.detail.DetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -45,6 +48,15 @@ class ExploreFragment : Fragment() {
 
             gameAdapter = GameAdapter()
 
+            gameAdapter.onItemClick = { selectedGame ->
+                val intent = Intent(context, DetailActivity::class.java)
+                intent.putExtra(DetailActivity.EXTRA_GAME, selectedGame)
+                lifecycleScope.launch {
+                    exploreViewModel.insertGame(selectedGame)
+                }
+                startActivity(intent)
+            }
+
             val marginVertical = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, resources.displayMetrics)
 
             with(binding.rvExplore){
@@ -71,7 +83,7 @@ class ExploreFragment : Fragment() {
 
                 if (query != null) {
                     lifecycleScope.launch {
-                        exploreViewModel.searchGames(query)
+                        exploreViewModel.searchGames("portal")
                         exploreViewModel.games.observe(viewLifecycleOwner, { games ->
                             if (games != null) {
                                 when(games) {

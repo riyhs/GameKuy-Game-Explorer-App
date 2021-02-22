@@ -11,4 +11,5 @@ interface GameUseCase {
     fun getDetailGame(id: Int): Flow<Resource<Game>>
     fun setFavoriteGame(game: Game)
     suspend fun searchGames(query: String): Resource<List<Game>>
+    suspend fun insertGame(game: Game)
 }

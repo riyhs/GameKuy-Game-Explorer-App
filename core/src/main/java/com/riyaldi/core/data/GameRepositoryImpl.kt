@@ -1,6 +1,7 @@
 package com.riyaldi.core.data
 
 import com.riyaldi.core.data.source.local.LocalDataSource
+import com.riyaldi.core.data.source.local.entity.GameEntity
 import com.riyaldi.core.data.source.remote.RemoteDataSource
 import com.riyaldi.core.data.source.remote.network.ApiResponse
 import com.riyaldi.core.data.source.remote.response.GameResponse
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@Suppress("UNCHECKED_CAST")
 @Singleton
 class GameRepositoryImpl @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
@@ -21,24 +23,24 @@ class GameRepositoryImpl @Inject constructor(
     private val appExecutors: AppExecutors
 ) : GameRepository {
     override fun getGames(): Flow<Resource<List<Game>>> =
-        object : NetworkResourceBound<List<Game>, List<GameResponse>>() {
-            override fun loadFromDB(): Flow<List<Game>> {
-                return localDataSource.getAllGames().map {
-                    DataMapper.mapEntitiesToDomain(it)
+            object : NetworkResourceBound<List<Game>, List<GameResponse>>() {
+                override fun loadFromDB(): Flow<List<Game>> {
+                    return localDataSource.getAllGames().map {
+                        DataMapper.mapEntitiesToDomain(it)
+                    }
                 }
-            }
 
-            override fun shouldFetch(data: List<Game>): Boolean =
-                data.isEmpty()
+                override fun shouldFetch(data: List<Game>?): Boolean =
+                        data?.isEmpty() == true || data == null
 
-            override suspend fun createCall(): Flow<ApiResponse<List<GameResponse>>> =
-                remoteDataSource.getAllGames()
+                override suspend fun createCall(): Flow<ApiResponse<List<GameResponse>>> =
+                        remoteDataSource.getAllGames()
 
-            override suspend fun saveCallResult(data: List<GameResponse>) {
-                val gameList = DataMapper.mapResponsesToEntities(data)
-                localDataSource.insertGames(gameList)
-            }
-        }.asFlow()
+                override suspend fun saveCallResult(data: List<GameResponse>) {
+                    val gameList = DataMapper.mapResponsesToEntities(data)
+                    localDataSource.insertAllGames(gameList)
+                }
+            }.asFlow() as Flow<Resource<List<Game>>>
 
     override fun getFavoriteGames(): Flow<List<Game>> {
         return localDataSource.getFavoriteGames().map {
@@ -48,25 +50,29 @@ class GameRepositoryImpl @Inject constructor(
     }
 
     override fun getDetailGame(id: Int): Flow<Resource<Game>> =
-        object : NetworkResourceBound<Game, GameResponse>() {
-            override fun loadFromDB(): Flow<Game> {
-                return localDataSource.getGameById(id).map {
-                    DataMapper.mapEntityToDomain(it)
+            object : NetworkResourceBound<Game, GameResponse>() {
+                override fun loadFromDB(): Flow<Game?>? {
+                    return localDataSource.getGameById(id)?.map { gameEntity: GameEntity? ->
+                        if (gameEntity == null) {
+                            return@map null
+                        } else {
+                            return@map DataMapper.mapEntityToDomain(gameEntity)
+                        }
+                    }
                 }
-            }
 
-            override fun shouldFetch(data: Game): Boolean {
-                return data.description == "" || data.description.isEmpty()
-            }
+                override fun shouldFetch(data: Game?): Boolean {
+                    return data == null || data.description == "" || data.description.isEmpty()
+                }
 
-            override suspend fun createCall(): Flow<ApiResponse<GameResponse>> =
-                remoteDataSource.getDetailGame(id)
+                override suspend fun createCall(): Flow<ApiResponse<GameResponse>> =
+                        remoteDataSource.getDetailGame(id)
 
-            override suspend fun saveCallResult(data: GameResponse) {
-                val gameDetail = DataMapper.mapResponseToEntity(data)
-                appExecutors.diskIO().execute { localDataSource.editGame(gameDetail) }
-            }
-        }.asFlow()
+                override suspend fun saveCallResult(data: GameResponse) {
+                    val gameDetail = DataMapper.mapResponseToEntity(data)
+                    localDataSource.insertGame(gameDetail)
+                }
+            }.asFlow() as Flow<Resource<Game>>
 
     override fun setFavoriteGame(game: Game) {
         val gameEntity = DataMapper.mapDomainToEntity(game)
@@ -88,6 +94,11 @@ class GameRepositoryImpl @Inject constructor(
                 Resource.Error(response.toString(), null)
             }
         }
+    }
+
+    override suspend fun insertGame(game: Game) {
+        val gameEntity = DataMapper.mapDomainToEntity(game)
+        appExecutors.diskIO().execute { localDataSource.editGame(gameEntity) }
     }
 
 }

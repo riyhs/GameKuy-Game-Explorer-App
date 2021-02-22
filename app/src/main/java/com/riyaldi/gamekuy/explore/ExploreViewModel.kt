@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.riyaldi.core.data.Resource
+import com.riyaldi.core.data.source.local.entity.GameEntity
 import com.riyaldi.core.domain.model.Game
 import com.riyaldi.core.domain.usecase.GameUseCase
 
@@ -16,4 +17,6 @@ class ExploreViewModel @ViewModelInject constructor(private val gameUseCase: Gam
     suspend fun searchGames(query: String)  {
         _games.value = gameUseCase.searchGames(query)
     }
+
+    suspend fun insertGame(game: Game) = gameUseCase.insertGame(game)
 }
