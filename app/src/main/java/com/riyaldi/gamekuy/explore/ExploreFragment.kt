@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.Toast
@@ -83,7 +82,7 @@ class ExploreFragment : Fragment() {
 
                 if (query != null) {
                     lifecycleScope.launch {
-                        exploreViewModel.searchGames("portal")
+                        exploreViewModel.searchGames(query)
                         exploreViewModel.games.observe(viewLifecycleOwner, { games ->
                             if (games != null) {
                                 when(games) {
