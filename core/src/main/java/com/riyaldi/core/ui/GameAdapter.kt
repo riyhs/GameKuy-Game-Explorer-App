@@ -3,10 +3,12 @@ package com.riyaldi.core.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.riyaldi.core.R
 import com.riyaldi.core.databinding.ItemListLayoutBinding
 import com.riyaldi.core.domain.model.Game
@@ -36,9 +38,14 @@ class GameAdapter: RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
         private val binding = ItemListLayoutBinding.bind(itemView)
         fun bind(data: Game){
             with(binding) {
+                val options = RequestOptions()
+                        .override(binding.ivItemPoster.width, binding.ivItemPoster.height)
+
                 Glide.with(itemView.context)
-                    .load(data.bgImage)
-                    .into(ivItemPoster)
+                        .load(data.bgImage)
+                        .apply(options)
+                        .into(ivItemPoster)
+
                 tvItemJudul.text = data.name
                 tvItemGenres.text = data.genres
                 tvItemReleased.text = data.platforms
