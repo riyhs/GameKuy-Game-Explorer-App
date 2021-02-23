@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".ui.FavoriteFragment">
+    tools:context=".ui.FavoriteFragment"
+    tools:ignore="Overdraw">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_favorite"
@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="48dp"
-        android:src="@drawable/ic_undraw_gaming" />
+        android:src="@drawable/ic_undraw_gaming"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tv_no_fav_games"
@@ -28,7 +29,7 @@
         android:layout_marginTop="175dp"
         android:layout_marginEnd="32dp"
         android:gravity="center"
-        android:text="You don't have any favorite games"
+        android:text="@string/you_don_t_have_any_favorite_games"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold" />
