@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -44,6 +45,7 @@ class ExploreFragment : Fragment() {
 
         if (activity != null) {
             setHasOptionsMenu(true)
+            showLoading(false)
 
             gameAdapter = GameAdapter()
 
@@ -86,12 +88,15 @@ class ExploreFragment : Fragment() {
                         exploreViewModel.games.observe(viewLifecycleOwner, { games ->
                             if (games != null) {
                                 when(games) {
-                                    is Resource.Loading -> Toast.makeText(context, "load", Toast.LENGTH_SHORT).show()
+                                    is Resource.Loading -> showLoading(true)
                                     is Resource.Success -> {
-                                        Toast.makeText(context, "success", Toast.LENGTH_SHORT).show()
                                         gameAdapter.setData(games.data)
+                                        showLoading(false)
                                     }
-                                    is Resource.Error -> Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                                    is Resource.Error -> {
+                                        Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                                        showLoading(false)
+                                    }
                                 }
                             }
                         })
@@ -104,6 +109,11 @@ class ExploreFragment : Fragment() {
                 return false
             }
         })
+    }
+
+    private fun showLoading(state: Boolean) {
+        binding.pbExplore.isVisible = state
+        binding.rvExplore.isVisible = !state
     }
 
     override fun onDestroy() {

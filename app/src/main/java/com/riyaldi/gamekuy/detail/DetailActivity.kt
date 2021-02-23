@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.riyaldi.core.data.Resource
@@ -38,17 +39,21 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         if (game != null) {
             detailViewModel.getDetailFilm(game.id).observe(this, { detailGame ->
                 when(detailGame) {
-                    is Resource.Loading -> Toast.makeText(this, "load", Toast.LENGTH_SHORT).show()
+                    is Resource.Loading -> showLoading(true)
                     is Resource.Success -> {
                         val dataGame = detailGame.data as Game
                         setFavoriteState(dataGame.isFavorite)
                         populateData(dataGame)
+                        showLoading(false)
                         binding.fabAddFavorite.setOnClickListener {
                             detailViewModel.setFavoriteGame(dataGame)
                             setFavoriteState(dataGame.isFavorite)
                         }
                     }
-                    is Resource.Error -> Toast.makeText(this, "error : ${detailGame.message}", Toast.LENGTH_SHORT).show()
+                    is Resource.Error -> {
+                        Toast.makeText(this, "error : ${detailGame.message}", Toast.LENGTH_SHORT).show()
+                        showLoading(false)
+                    }
                 }
             })
 
@@ -69,6 +74,12 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         Glide.with(this)
             .load(game.bgImage)
             .into(binding.backdrop)
+    }
+
+    private fun showLoading(state: Boolean) {
+        binding.pbDetail.isVisible = state
+        binding.appbar.isVisible = !state
+        binding.nsvDetail.isVisible = !state
     }
 
     private val percentageToShowImage = 20

@@ -2,12 +2,12 @@ package com.riyaldi.gamekuy.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,11 +47,15 @@ class HomeFragment : Fragment() {
             homeViewModel.game.observe(viewLifecycleOwner, { game ->
                 if (game != null) {
                     when(game) {
-                        is Resource.Loading -> Log.d("HomeFragment", "loading")
+                        is Resource.Loading -> showLoading(true)
                         is Resource.Success -> {
                             gameAdapter.setData(game.data)
+                            showLoading(false)
                         }
-                        is Resource.Error -> Toast.makeText(context, "error ${game.message}", Toast.LENGTH_SHORT).show()
+                        is Resource.Error -> {
+                            Toast.makeText(context, "error ${game.message}", Toast.LENGTH_SHORT).show()
+                            showLoading(false)
+                        }
                     }
                 }
             })
@@ -66,6 +70,11 @@ class HomeFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun showLoading(state: Boolean) {
+        binding.pbHome.isVisible = state
+        binding.rvHome.isVisible = !state
     }
 
     override fun onDestroy() {
