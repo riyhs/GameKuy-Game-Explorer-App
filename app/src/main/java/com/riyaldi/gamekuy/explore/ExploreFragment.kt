@@ -8,6 +8,7 @@ import android.util.TypedValue
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -46,6 +47,7 @@ class ExploreFragment : Fragment() {
         if (activity != null) {
             setHasOptionsMenu(true)
             showLoading(false)
+            showSearchGame(true)
 
             gameAdapter = GameAdapter()
 
@@ -81,6 +83,9 @@ class ExploreFragment : Fragment() {
         searchView.queryHint = "Cari game"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                showSearchGame(false)
+                showNoGame(false)
+                showLoading(true)
 
                 if (query != null) {
                     lifecycleScope.launch {
@@ -94,6 +99,7 @@ class ExploreFragment : Fragment() {
                                         showLoading(false)
                                     }
                                     is Resource.Error -> {
+                                        showNoGame(true)
                                         Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
                                         showLoading(false)
                                     }
@@ -113,6 +119,18 @@ class ExploreFragment : Fragment() {
 
     private fun showLoading(state: Boolean) {
         binding.pbExplore.isVisible = state
+        binding.rvExplore.isInvisible = state
+    }
+
+    private fun showSearchGame(state: Boolean) {
+        binding.ivSearchGame.isVisible = state
+        binding.tvSearchGame.isVisible = state
+        binding.rvExplore.isVisible = !state
+    }
+
+    private fun showNoGame(state: Boolean) {
+        binding.ivNoGame.isVisible = state
+        binding.tvNoGame.isVisible = state
         binding.rvExplore.isVisible = !state
     }
 
