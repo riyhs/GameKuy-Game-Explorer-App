@@ -63,7 +63,6 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     private fun setFavoriteState(isFav: Boolean) {
         if (isFav) binding.fabAddFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_filled))
         else binding.fabAddFavorite.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_border))
-
     }
 
     private fun populateData(game: Game) {

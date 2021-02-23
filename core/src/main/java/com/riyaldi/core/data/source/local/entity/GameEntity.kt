@@ -40,5 +40,5 @@ data class GameEntity(
     val clip: String,
 
     @ColumnInfo(name = "isFavorite")
-    var isFavorite: Boolean = false
+    var isFavorite: Boolean
 ) : Parcelable

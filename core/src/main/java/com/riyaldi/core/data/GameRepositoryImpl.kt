@@ -1,5 +1,6 @@
 package com.riyaldi.core.data
 
+import android.util.Log
 import com.riyaldi.core.data.source.local.LocalDataSource
 import com.riyaldi.core.data.source.local.entity.GameEntity
 import com.riyaldi.core.data.source.remote.RemoteDataSource
@@ -62,7 +63,8 @@ class GameRepositoryImpl @Inject constructor(
                 }
 
                 override fun shouldFetch(data: Game?): Boolean {
-                    return data == null || data.description == "" || data.description.isEmpty()
+                    Log.d("DetailActivity", "repository : ${data?.description == ""}")
+                    return data?.description == "" || data == null
                 }
 
                 override suspend fun createCall(): Flow<ApiResponse<GameResponse>> =
