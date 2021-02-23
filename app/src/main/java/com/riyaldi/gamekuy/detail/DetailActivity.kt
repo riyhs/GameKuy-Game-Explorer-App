@@ -6,6 +6,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.map
 import com.bumptech.glide.Glide
 import com.google.android.material.appbar.AppBarLayout
 import com.riyaldi.core.data.Resource
@@ -13,6 +15,8 @@ import com.riyaldi.core.domain.model.Game
 import com.riyaldi.gamekuy.R
 import com.riyaldi.gamekuy.databinding.ActivityDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 @AndroidEntryPoint
@@ -21,6 +25,7 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
     private val detailViewModel: DetailViewModel by viewModels()
 
     private lateinit var binding: ActivityDetailBinding
+    private lateinit var dataGame: Game
 
     companion object {
         const val EXTRA_GAME = "extra_game"
@@ -37,26 +42,66 @@ class DetailActivity : AppCompatActivity(), AppBarLayout.OnOffsetChangedListener
         val game = intent.getParcelableExtra<Game>(EXTRA_GAME)
 
         if (game != null) {
-            detailViewModel.getDetailFilm(game.id).observe(this, { detailGame ->
-                when(detailGame) {
-                    is Resource.Loading -> showLoading(true)
-                    is Resource.Success -> {
-                        val dataGame = detailGame.data as Game
-                        setFavoriteState(dataGame.isFavorite)
-                        populateData(dataGame)
-                        showLoading(false)
-                        binding.fabAddFavorite.setOnClickListener {
-                            detailViewModel.setFavoriteGame(dataGame)
+            var isFav = true
+
+            lifecycleScope.launch {
+                isFav = detailViewModel.isFavorite(game.id) as Boolean
+            }
+            Toast.makeText(this@DetailActivity, isFav.toString(), Toast.LENGTH_SHORT).show()
+
+            if (isFav) {
+                var isChanged = false
+
+                detailViewModel.getDetailFilm(game.id).observe(this, { detailGame ->
+                    when (detailGame) {
+                        is Resource.Loading -> showLoading(true)
+                        is Resource.Success -> {
+                            dataGame = detailGame.data as Game
+
+                            if (dataGame.isFavorite != isFav && !isChanged) {
+                                detailViewModel.setFavoriteGame(dataGame)
+                                setFavoriteState(dataGame.isFavorite)
+                                isChanged = true
+                            }
+
+                            populateData(dataGame)
+                            showLoading(false)
+
                             setFavoriteState(dataGame.isFavorite)
+                            binding.fabAddFavorite.setOnClickListener {
+                                detailViewModel.setFavoriteGame(dataGame)
+                                setFavoriteState(dataGame.isFavorite)
+                            }
+                        }
+                        is Resource.Error -> {
+                            Toast.makeText(this, "error : ${detailGame.message}", Toast.LENGTH_SHORT).show()
+                            showLoading(false)
                         }
                     }
-                    is Resource.Error -> {
-                        Toast.makeText(this, "error : ${detailGame.message}", Toast.LENGTH_SHORT).show()
-                        showLoading(false)
-                    }
-                }
-            })
+                })
+            } else {
+                detailViewModel.getDetailFilm(game.id).observe(this, { detailGame ->
+                    when (detailGame) {
+                        is Resource.Loading -> showLoading(true)
+                        is Resource.Success -> {
+                            dataGame = detailGame.data as Game
 
+                            populateData(dataGame)
+                            showLoading(false)
+
+                            setFavoriteState(dataGame.isFavorite)
+                            binding.fabAddFavorite.setOnClickListener {
+                                detailViewModel.setFavoriteGame(dataGame)
+                                setFavoriteState(dataGame.isFavorite)
+                            }
+                        }
+                        is Resource.Error -> {
+                            Toast.makeText(this, "error : ${detailGame.message}", Toast.LENGTH_SHORT).show()
+                            showLoading(false)
+                        }
+                    }
+                })
+            }
         }
     }
 

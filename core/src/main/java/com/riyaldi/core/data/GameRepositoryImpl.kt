@@ -1,6 +1,5 @@
 package com.riyaldi.core.data
 
-import android.util.Log
 import com.riyaldi.core.data.source.local.LocalDataSource
 import com.riyaldi.core.data.source.local.entity.GameEntity
 import com.riyaldi.core.data.source.remote.RemoteDataSource
@@ -63,7 +62,6 @@ class GameRepositoryImpl @Inject constructor(
                 }
 
                 override fun shouldFetch(data: Game?): Boolean {
-                    Log.d("DetailActivity", "repository : ${data?.description == ""}")
                     return data?.description == "" || data == null
                 }
 
@@ -75,6 +73,11 @@ class GameRepositoryImpl @Inject constructor(
                     localDataSource.insertGame(gameDetail)
                 }
             }.asFlow() as Flow<Resource<Game>>
+
+    override suspend fun isFavorite(id: Int): Boolean? {
+
+        return localDataSource.getGameById(id)?.first()?.isFavorite
+    }
 
     override fun setFavoriteGame(game: Game) {
         val gameEntity = DataMapper.mapDomainToEntity(game)
