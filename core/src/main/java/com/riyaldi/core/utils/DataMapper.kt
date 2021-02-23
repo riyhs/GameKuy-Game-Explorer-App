@@ -15,12 +15,12 @@ object DataMapper {
                     id = it.id,
                     name = it.name,
                     description = "",
-                    released = it.released,
+                    released = it.released ?: "No Data",
                     bgImage = it.backgroundImage,
-                    metaScore = it.metacritic,
+                    metaScore = it.metacritic ?: 0,
                     platforms = platforms,
                     genres = genres,
-                    clip = it.clip?.clip ?: "null",
+                    clip = it.clip?.clip ?: "",
                     isFavorite = false
             )
             gameList.add(game)
@@ -78,9 +78,9 @@ object DataMapper {
             id = input.id,
             name = input.name,
             description = input.descriptionRaw,
-            released = input.released,
+            released = input.released ?: "No Data",
             bgImage = input.backgroundImage,
-            metaScore = input.metacritic,
+            metaScore = input.metacritic ?: 0,
             platforms = platforms,
             genres = genres,
             clip = input.clip?.clip ?: "null",
