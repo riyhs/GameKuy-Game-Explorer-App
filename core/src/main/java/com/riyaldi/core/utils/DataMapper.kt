@@ -107,11 +107,13 @@ object DataMapper {
     private fun getGenreName(data: GameResponse): String {
         val result = StringBuilder().append("")
 
-        for (i in data.genres.indices) {
-            if (i < data.genres.size - 1) {
-                result.append("${data.genres[i].name}, ")
-            } else {
-                result.append(data.genres[i].name)
+        if (data.genres != null) {
+            for (i in data.genres.indices) {
+                if (i < data.genres.size - 1) {
+                    result.append("${data.genres[i].name}, ")
+                } else {
+                    result.append(data.genres[i].name)
+                }
             }
         }
 
