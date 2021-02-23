@@ -91,11 +91,13 @@ object DataMapper {
     private fun getPlatformName(data: GameResponse): String {
         val result = StringBuilder().append("")
 
-        for (i in data.platforms.indices) {
-            if (i < data.platforms.size - 1) {
-                result.append("${data.platforms[i].platform.name}, ")
-            } else {
-                result.append(data.platforms[i].platform.name)
+        if (data.platforms != null) {
+            for (i in data.platforms.indices) {
+                if (i < data.platforms.size - 1) {
+                    result.append("${data.platforms[i].platform.name}, ")
+                } else {
+                    result.append(data.platforms[i].platform.name)
+                }
             }
         }
 
