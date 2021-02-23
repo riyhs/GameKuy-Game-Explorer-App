@@ -61,6 +61,7 @@
         android:id="@+id/nsv_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
         android:background="@color/black"
         android:padding="16dp"
         android:paddingStart="24dp"
@@ -72,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="8dp"
-            android:text="Lorem"
+            android:text="@string/lorem"
             android:textColor="@android:color/primary_text_dark"
             android:textSize="20sp" />
     </androidx.core.widget.NestedScrollView>
@@ -85,5 +86,6 @@
         android:src="@drawable/ic_favorite_border"
         app:backgroundTint="@color/white"
         app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|right|end"
+        tools:ignore="ContentDescription" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
