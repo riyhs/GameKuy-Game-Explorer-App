@@ -1,10 +1,8 @@
 package com.riyaldi.core.domain.usecase
 
 import com.riyaldi.core.data.Resource
-import com.riyaldi.core.data.source.local.entity.GameEntity
 import com.riyaldi.core.domain.model.Game
 import com.riyaldi.core.domain.repository.GameRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class GameUseCaseImpl @Inject constructor(private val gameRepository: GameRepository): GameUseCase {

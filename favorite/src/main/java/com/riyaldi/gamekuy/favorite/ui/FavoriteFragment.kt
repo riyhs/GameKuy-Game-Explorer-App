@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +31,7 @@ class FavoriteFragment : Fragment() {
     }
 
     private var _binding: FragmentFavoriteBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding as FragmentFavoriteBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
@@ -65,7 +66,15 @@ class FavoriteFragment : Fragment() {
             }
 
             favoriteViewModel.favoriteGames.observe(viewLifecycleOwner, { favoriteGames ->
-                favoriteGameAdapter.setData(favoriteGames)
+                if (favoriteGames.isEmpty()) {
+                    binding.ivNoFavGames.isVisible = true
+                    binding.tvNoFavGames.isVisible = true
+                    favoriteGameAdapter.setData(favoriteGames)
+                } else {
+                    binding.ivNoFavGames.isVisible = false
+                    binding.tvNoFavGames.isVisible = false
+                    favoriteGameAdapter.setData(favoriteGames)
+                }
             })
 
             val marginVertical = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, resources.displayMetrics)
