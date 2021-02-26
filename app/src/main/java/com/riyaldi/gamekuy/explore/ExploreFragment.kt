@@ -29,7 +29,7 @@ class ExploreFragment : Fragment() {
     private val exploreViewModel: ExploreViewModel by viewModels()
 
     private var _binding: FragmentExploreBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding as FragmentExploreBinding
 
     private lateinit var gameAdapter: GameAdapter
 
@@ -59,6 +59,23 @@ class ExploreFragment : Fragment() {
                 }
                 startActivity(intent)
             }
+
+            exploreViewModel.games.observe(viewLifecycleOwner, { games ->
+                if (games != null) {
+                    when(games) {
+                        is Resource.Loading -> showLoading(true)
+                        is Resource.Success -> {
+                            gameAdapter.setData(games.data)
+                            showLoading(false)
+                        }
+                        is Resource.Error -> {
+                            showNoGame(true)
+                            Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
+                            showLoading(false)
+                        }
+                    }
+                }
+            })
 
             val marginVertical = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, resources.displayMetrics)
 
@@ -90,22 +107,6 @@ class ExploreFragment : Fragment() {
                 if (query != null) {
                     lifecycleScope.launch {
                         exploreViewModel.searchGames(query)
-                        exploreViewModel.games.observe(viewLifecycleOwner, { games ->
-                            if (games != null) {
-                                when(games) {
-                                    is Resource.Loading -> showLoading(true)
-                                    is Resource.Success -> {
-                                        gameAdapter.setData(games.data)
-                                        showLoading(false)
-                                    }
-                                    is Resource.Error -> {
-                                        showNoGame(true)
-                                        Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
-                                        showLoading(false)
-                                    }
-                                }
-                            }
-                        })
                     }
                 }
                 return true
