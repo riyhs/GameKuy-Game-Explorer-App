@@ -74,11 +74,6 @@ class GameRepositoryImpl @Inject constructor(
                 }
             }.asFlow() as Flow<Resource<Game>>
 
-    override suspend fun isFavorite(id: Int): Boolean? {
-
-        return localDataSource.getGameById(id)?.first()?.isFavorite
-    }
-
     override fun setFavoriteGame(game: Game) {
         val gameEntity = DataMapper.mapDomainToEntity(game)
         gameEntity.isFavorite = !gameEntity.isFavorite
