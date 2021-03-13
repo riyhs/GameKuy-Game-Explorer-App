@@ -72,3 +72,7 @@
   *** rewind();
 }
 ##---------------End: proguard configuration for Glide  ----------
+
+##---------------Begin: proguard configuration for SQLCipher  ----------
+-keep class net.sqlcipher.** {*;}
+##---------------End: proguard configuration for SQLCipher  ----------
