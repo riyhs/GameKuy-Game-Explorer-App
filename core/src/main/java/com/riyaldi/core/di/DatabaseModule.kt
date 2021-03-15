@@ -2,6 +2,7 @@ package com.riyaldi.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.riyaldi.core.BuildConfig
 import com.riyaldi.core.data.source.local.room.GameDao
 import com.riyaldi.core.data.source.local.room.GameDatabase
 import dagger.Module
@@ -20,10 +21,10 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): GameDatabase {
-        val passphrase: ByteArray = SQLiteDatabase.getBytes("gameKuy".toCharArray())
+        val passphrase: ByteArray = SQLiteDatabase.getBytes(BuildConfig.PASSPHRASE.toCharArray())
         val factory = SupportFactory(passphrase)
 
-        return Room.databaseBuilder(context, GameDatabase::class.java, "Game.db")
+        return Room.databaseBuilder(context, GameDatabase::class.java, BuildConfig.DB)
             .fallbackToDestructiveMigration()
             .openHelperFactory(factory)
             .build()

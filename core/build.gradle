@@ -18,6 +18,15 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String", "BASE_URL", "\"https://api.rawg.io/api/\"")
+        buildConfigField("String", "HOSTNAME", "\"api.rawg.io\"")
+        buildConfigField("String", "DB", "\"Game.db\"")
+        buildConfigField("String", "PASSPHRASE", "\"gameKuy\"")
+        buildConfigField("String", "PIN_A", "\"sha256/UGwY2lttaRoHnGd1gpeydmov1LzioQpzYTywtNSJkAU=\"")
+        buildConfigField("String", "PIN_B", "\"sha256/hS5jJ4P+iQUErBkvoWBQOd1T7VOAYlOVegvv1iMzpxA=\"")
+        buildConfigField("String", "PIN_C", "\"sha256/R+V29DqDnO269dFhAAB5jMlZHepWpDGuoejXJjprh7A=\"")
+        buildConfigField("String", "PIN_D", "\"sha256/FEzVOUp4dF3gI0ZVPRJhFbSJVXR+uQmMH65xhs1glH4=\"")
     }
 
     buildTypes {
