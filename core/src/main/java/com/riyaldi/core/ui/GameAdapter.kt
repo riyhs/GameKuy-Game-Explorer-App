@@ -55,11 +55,11 @@ class GameAdapter: RecyclerView.Adapter<GameAdapter.GameViewHolder>() {
 
                 when {
                     data.metaScore < 50 -> {
-                        metascore.background = getDrawable(itemView.context, R.drawable.custom_bg_metascore_red)
+                        tvItemMetascore.background = getDrawable(itemView.context, R.drawable.custom_bg_metascore_red)
                         tvItemMetascore.setTextColor(getColor(itemView.context, R.color.red))
                     }
                     data.metaScore < 75 -> {
-                        metascore.background = getDrawable(itemView.context, R.drawable.custom_bg_metascore_yellow)
+                        tvItemMetascore.background = getDrawable(itemView.context, R.drawable.custom_bg_metascore_yellow)
                         tvItemMetascore.setTextColor(getColor(itemView.context, R.color.yellow))
                     }
                 }
