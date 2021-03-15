@@ -1,5 +1,3 @@
-# GameKuy-Game-Explorer-App
-
 <h1 align="center">
   Submission 2 Dicoding MADE : GameKuy
 </h1>
