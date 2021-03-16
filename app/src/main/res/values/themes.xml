@@ -30,4 +30,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="NoActionBar.Dark" parent="NoActionBar">
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+        <item name="android:background">@color/black</item>
+    </style>
+
 </resources>
