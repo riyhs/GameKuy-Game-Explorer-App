@@ -18,11 +18,26 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String", "BASE_URL", "\"https://api.rawg.io/api/\"")
+        buildConfigField("String", "HOSTNAME", "\"api.rawg.io\"")
+        buildConfigField("String", "DB", "\"Game.db\"")
+        buildConfigField("String", "PASSPHRASE", "\"gameKuy\"")
+        buildConfigField("String", "PIN_A", "\"sha256/UGwY2lttaRoHnGd1gpeydmov1LzioQpzYTywtNSJkAU=\"")
+        buildConfigField("String", "PIN_B", "\"sha256/hS5jJ4P+iQUErBkvoWBQOd1T7VOAYlOVegvv1iMzpxA=\"")
+        buildConfigField("String", "PIN_C", "\"sha256/R+V29DqDnO269dFhAAB5jMlZHepWpDGuoejXJjprh7A=\"")
+        buildConfigField("String", "PIN_D", "\"sha256/FEzVOUp4dF3gI0ZVPRJhFbSJVXR+uQmMH65xhs1glH4=\"")
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -44,6 +59,10 @@ dependencies {
     api "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     androidTestImplementation "androidx.room:room-testing:$room_version"
+
+    //sqlcipher
+    implementation "net.zetetic:android-database-sqlcipher:4.4.0"
+    implementation "androidx.sqlite:sqlite-ktx:2.1.0"
 
     //coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"

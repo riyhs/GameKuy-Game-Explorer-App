@@ -25,11 +25,11 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels()
 
     private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding as FragmentHomeBinding
+    private val binding get() = _binding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
             val gameAdapter = GameAdapter()
 
             gameAdapter.onItemClick = { selectedGame ->
-                val intent = Intent(context, DetailActivity::class.java)
+                val intent = Intent(activity, DetailActivity::class.java)
                 intent.putExtra(EXTRA_GAME, selectedGame)
                 startActivity(intent)
             }
@@ -62,24 +62,23 @@ class HomeFragment : Fragment() {
 
             val marginVertical = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16f, resources.displayMetrics)
 
-            with(binding.rvHome) {
-                addItemDecoration(MarginItemDecoration(marginVertical.toInt()))
-                layoutManager = LinearLayoutManager(context)
-                setHasFixedSize(true)
-                adapter = gameAdapter
+            with(binding?.rvHome) {
+                this?.addItemDecoration(MarginItemDecoration(marginVertical.toInt()))
+                this?.layoutManager = LinearLayoutManager(context)
+                this?.setHasFixedSize(true)
+                this?.adapter = gameAdapter
             }
         }
 
     }
 
     private fun showLoading(state: Boolean) {
-        binding.pbHome.isVisible = state
-        binding.rvHome.isVisible = !state
+        binding?.pbHome?.isVisible = state
+        binding?.rvHome?.isVisible = !state
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
-
 }
