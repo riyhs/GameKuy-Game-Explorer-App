@@ -6,6 +6,7 @@
 </p>
 <p align="center">
   <a href="http://developer.android.com/index.html"><img alt="Platform" src="https://img.shields.io/badge/platform-Android-green.svg"></a>
+  <img alt="api" src="https://img.shields.io/badge/API-23%2B-green?logo=android"/>
   <a href="http://kotlinlang.org"><img alt="Kotlin" src="https://img.shields.io/badge/kotlin-1.4.31-blue.svg"></a>
   <a href="https://developer.android.com/studio/releases/gradle-plugin"><img alt="Gradle" src="https://img.shields.io/badge/gradle-4.1.2-green.svg"></a>
   <a href="https://github.com/riyhs/GameKuy-Game-Explorer-App/"><img alt="Star" src="https://img.shields.io/github/stars/riyhs/GameKuy-Game-Explorer-App"></a>
@@ -14,6 +15,7 @@
 
 ## Table of Contents
 - [Introduction](#introduction)
+- [Mad Scorecard](#mad-scorecard)
 - [Installation](#installation)
 - [Demo](#demo)
 - [Features](#features)
@@ -26,6 +28,12 @@ GameKuy Android App, build with Kotlin due to finish Dicoding Menjadi Android De
 
 I Hope this Project will help someone, if you feel helped with this project, you can give stars to support me, thank you very much :), 
 And also thanks to [Adithya](https://github.com/Adithya-13/MadeSubmsission) for allowing me using his readme template, it was very helpful :))
+
+## Mad Scorecard
+
+[<img src="https://github.com/riyhs/GameKuy-Game-Explorer-App/blob/submission-2/assets/madscore/summary.png"></img>](https://madscorecard.withgoogle.com/scorecards/1768413859/#summary)
+[<img src="https://github.com/riyhs/GameKuy-Game-Explorer-App/blob/submission-2/assets/madscore/jetpack.png"></img>](https://madscorecard.withgoogle.com/scorecards/1768413859/#jetpack)
+[<img src="https://github.com/riyhs/GameKuy-Game-Explorer-App/blob/submission-2/assets/madscore/kotlin.png"></img>](https://madscorecard.withgoogle.com/scorecards/1768413859/#kotlin)
 
 ## Installation
 
