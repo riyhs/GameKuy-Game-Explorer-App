@@ -6,6 +6,10 @@ plugins {
 }
 apply from: '../shared_dependencies.gradle'
 
+def apikeyPropertiesFile = rootProject.file("apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -13,8 +17,8 @@ android {
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -27,6 +31,7 @@ android {
         buildConfigField("String", "PIN_B", "\"sha256/hS5jJ4P+iQUErBkvoWBQOd1T7VOAYlOVegvv1iMzpxA=\"")
         buildConfigField("String", "PIN_C", "\"sha256/R+V29DqDnO269dFhAAB5jMlZHepWpDGuoejXJjprh7A=\"")
         buildConfigField("String", "PIN_D", "\"sha256/FEzVOUp4dF3gI0ZVPRJhFbSJVXR+uQmMH65xhs1glH4=\"")
+        buildConfigField("String", "APIKEY", apikeyProperties['APIKEY'])
     }
 
     buildTypes {
