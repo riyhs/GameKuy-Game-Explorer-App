@@ -6,8 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
-import okhttp3.CertificatePinner
-import okhttp3.OkHttpClient
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,12 +28,26 @@ class NetworkModule {
             )
             .build()
 
-        return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .connectTimeout(120, TimeUnit.SECONDS)
-            .readTimeout(120, TimeUnit.SECONDS)
-            .certificatePinner(certificatePinner)
-            .build()
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        httpClient.connectTimeout(120, TimeUnit.SECONDS)
+        httpClient.readTimeout(120, TimeUnit.SECONDS)
+        httpClient.certificatePinner(certificatePinner)
+        httpClient.addInterceptor(object : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): Response {
+                val original: Request = chain.request()
+                val originalHttpUrl: HttpUrl = original.url
+                val url = originalHttpUrl.newBuilder()
+                    .addQueryParameter("key", BuildConfig.APIKEY)
+                    .build()
+                val requestBuilder: Request.Builder = original.newBuilder()
+                    .url(url)
+                val request: Request = requestBuilder.build()
+                return chain.proceed(request)
+            }
+        })
+
+        return httpClient.build()
     }
 
     @Provides
