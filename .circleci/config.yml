@@ -2,7 +2,10 @@ version: 2.1
  
 orbs:
   android: circleci/android@0.2.1
- 
+
+before_script:
+  - touch apikey.properties
+
 jobs:
   build:
     executor: android/android
