@@ -14,6 +14,9 @@ jobs:
           name: Touch Apikey
           command: touch apikey.properties
       - run:
+          name: Add Api Key
+          command: echo "APIKEY=\"APIKEY\"" >> apikey.properties
+      - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
       - run:
