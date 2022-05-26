@@ -3,9 +3,6 @@ version: 2.1
 orbs:
   android: circleci/android@0.2.1
 
-before_script:
-  - touch apikey.properties
-
 jobs:
   build:
     executor: android/android
@@ -13,6 +10,9 @@ jobs:
       - checkout
       - restore_cache:
           key: android-orb-v1-
+      - run:
+          name: Touch Apikey
+          command: touch apikey.properties
       - run:
           name: Chmod permissions
           command: sudo chmod +x ./gradlew
